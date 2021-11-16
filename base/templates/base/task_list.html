@@ -16,13 +16,24 @@
 
 
 <div id="search-add-wrapper">
-    <form method="GET" style="display: flex;">
-        <input type='text' name='search-area' placeholder="Search your task" value="{{search_input}}">
-        <input class="button" type="submit" value='Search'>
+    <form method="GET">
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control"  name='search-area' placeholder="Write a task name" value="{{search_input}}">
+            <button class="btn btn-outline-dark" type="submit">Search</button>
+        </div>
+
+        {% if tasks|length > 0 %}
+            <div class="row">
+                <div class="col text-center">
+                    <button class="btn btn-outline-dark"  href="{% url 'task-create' %}">Create Task</button>
+                </div>
+            </div>
+        {% endif %}
+
     </form>
-    {% if tasks|length > 0 %}
-        <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
-    {% endif %}
+
+
 </div>
 
 
@@ -57,8 +68,8 @@
 
     {% empty %}
         <div style="text-align: center; padding-bottom: 10px; line-height: 1em;">
-            <h3>No new tasks are created.</h3>
-            <h3>Create a <a style="text-decoration: none; color: #e53935;" href="{% url 'task-create' %}">New task</a> ! </h3>
+            <h3>Nothing to show here. Please follow this link:</h3>
+            <a href="{% url 'task-create' %}"> Create a New Task</a>
         </div>
     {% endfor %}
 </div>
