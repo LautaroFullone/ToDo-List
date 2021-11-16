@@ -9,7 +9,7 @@ class Task(models.Model):
     complete = models.BooleanField(default= False)
     create = models.DateTimeField(auto_now_add= True)
 
-    def __str(self):
+    def __str__(self):  #define el atributo principal
         return self.title
 
     class Meta:

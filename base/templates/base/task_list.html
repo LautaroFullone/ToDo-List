@@ -1,10 +1,9 @@
 {% extends 'base/main.html' %} {% block content %}
 
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <div class="header-bar">
     <div>
         <h1>Hello {{request.user|title}}</h1>
-        <h3 style="margin:0">You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }}</h3>
+        <h3>You have {{count}} incomplete task{{ count|pluralize:"s" }}</h3>
     </div>
 
     {% if request.user.is_authenticated %}
@@ -17,7 +16,6 @@
 
 <div id="search-add-wrapper">
     <form method="GET">
-
         <div class="input-group mb-3">
             <input type="text" class="form-control"  name='search-area' placeholder="Write a task name" value="{{search_input}}">
             <button class="btn btn-outline-dark" type="submit">Search</button>
@@ -32,41 +30,38 @@
         {% endif %}
 
     </form>
-
-
 </div>
-
-
-<!-- Hidden form. Form submits new item positions -->
-
-
 
 <div id="tasklist" class="task-items-wrapper">
     {% for task in tasks %}
-    <div class="task-wrapper" data-position="{{task.pk}}">
-        <div class="task-title">
-            {% if task.complete %}
-                <div class="task-complete-icon"></div>
-                <i>
-                    <s>
-                        <a href="{% url 'task-update' task.id %}">{{task.title}}</a>
-                    </s>
-                </i>
-            {% else %}
-                <div class="task-incomplete-icon"></div>
-                <a href="{% url 'task-update' task.id %}">{{task.title}}</a>
-            {% endif %}
-        </div>
-        <div class="task-controls">
-            <a class="delete-link px-4" href="{% url 'task-delete' task.id %}">&#215;</a>
-        </div>
-    </div>
+        <div class="task-wrapper" data-position="{{task.pk}}">
 
-    {% empty %}
-        <div style="text-align: center" class="pb-3">
-            <h5>Nothing to show here. Please follow this link:</h5>
-            <a href="{% url 'task-create' %}"> Create a New Task</a>
+            <div class="task-title">
+                {% if task.complete %}
+                    <div class="task-complete-icon"></div>
+                    <i>
+                        <s>
+                            <a href="{% url 'task-update' task.id %}">{{task.title}}</a>
+                        </s>
+                    </i>
+
+                {% else %}
+                    <div class="task-incomplete-icon"></div>
+                    <a href="{% url 'task-update' task.id %}">{{task.title}}</a>
+
+                {% endif %}
+            </div>
+
+            <div class="task-controls">
+                <a class="delete-link px-4" href="{% url 'task-delete' task.id %}">&#215;</a>
+            </div>
         </div>
+
+        {% empty %}
+            <div style="text-align: center" class="pb-3">
+                <h5>Nothing to show here. Please follow this link:</h5>
+                <a href="{% url 'task-create' %}"> Create a New Task</a>
+            </div>
     {% endfor %}
 </div>
 
