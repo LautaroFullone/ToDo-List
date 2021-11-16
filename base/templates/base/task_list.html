@@ -26,7 +26,7 @@
         {% if tasks|length > 0 %}
             <div class="row">
                 <div class="col text-center">
-                    <button class="btn btn-outline-dark"  href="{% url 'task-create' %}">Create Task</button>
+                    <a class="btn btn-outline-dark"  href="{% url 'task-create' %}">Create Task</a>
                 </div>
             </div>
         {% endif %}
@@ -38,10 +38,7 @@
 
 
 <!-- Hidden form. Form submits new item positions -->
-<form style="display: none;" id="reorderForm" method="post" action="{% url 'task-reorder' %}">
-    {% csrf_token %}
-    <input type="hidden" id="positionInput" name="position">
-</form>
+
 
 
 <div id="tasklist" class="task-items-wrapper">
@@ -61,14 +58,13 @@
             {% endif %}
         </div>
         <div class="task-controls">
-            <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
-            <span class="handle">&nbsp;&#10247;</span>
+            <a class="delete-link px-4" href="{% url 'task-delete' task.id %}">&#215;</a>
         </div>
     </div>
 
     {% empty %}
-        <div style="text-align: center; padding-bottom: 10px; line-height: 1em;">
-            <h3>Nothing to show here. Please follow this link:</h3>
+        <div style="text-align: center" class="pb-3">
+            <h5>Nothing to show here. Please follow this link:</h5>
             <a href="{% url 'task-create' %}"> Create a New Task</a>
         </div>
     {% endfor %}

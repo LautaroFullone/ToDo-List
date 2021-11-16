@@ -91,15 +91,3 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         owner = self.request.user
         return self.model.objects.filter(user=owner)
-
-class TaskReorder(View):
-    def post(self, request):
-        form = PositionForm(request.POST)
-
-        if form.is_valid():
-            positionList = form.cleaned_data["position"].split(',')
-
-            with transaction.atomic():
-                self.request.user.set_task_order(positionList)
-
-        return redirect(reverse_lazy('tasks'))
