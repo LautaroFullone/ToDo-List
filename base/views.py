@@ -50,7 +50,7 @@ class TaskList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tasks'] = context['tasks'].filter(user=self.request.user)
-        context['count'] = context['tasks'].filter(complete=False).count()
+        context['count'] = context['tasks'].filter(status='Completado').count()
 
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
@@ -69,7 +69,7 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['title', 'description', 'complete']  # SON LOS ATRIBUTOS DEL MODELO QUE QUEREMOS EN EL FORMULARIO -> ['title', 'description']
+    fields = ['title', 'description', 'status']  # SON LOS ATRIBUTOS DEL MODELO QUE QUEREMOS EN EL FORMULARIO -> ['title', 'description']
     success_url = reverse_lazy('tasks')  # cuando es success envio a la vista de tasks
 
     def form_valid(self, form):   #asigna el usuario que crea la Task, al objeto task
@@ -79,8 +79,9 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
-    fields = ['title', 'description', 'complete']
+    fields = ['title', 'description', 'status']
     success_url = reverse_lazy('tasks')
+
 
 
 class TaskDelete(LoginRequiredMixin, DeleteView):
@@ -91,3 +92,7 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     def get_queryset(self): #nose bien su funcionalidad
         owner = self.request.user
         return self.model.objects.filter(user=owner)
+
+
+
+

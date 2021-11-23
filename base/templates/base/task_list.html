@@ -3,7 +3,7 @@
 <div class="header-bar">
     <div>
         <h1>Hello {{request.user|title}}</h1>
-        <h3>You have {{count}} incomplete task{{ count|pluralize:"s" }}</h3>
+        <h3>You have {{count}} completed task{{ count|pluralize:"s" }}</h3>
     </div>
 
     {% if request.user.is_authenticated %}
@@ -37,7 +37,8 @@
         <div class="task-wrapper" data-position="{{task.pk}}">
 
             <div class="task-title">
-                {% if task.complete %}
+
+                {% if task.status == 'Completado' %}
                     <div class="task-complete-icon"></div>
                     <i>
                         <s>
@@ -48,8 +49,11 @@
                 {% else %}
                     <div class="task-incomplete-icon"></div>
                     <a href="{% url 'task-update' task.id %}">{{task.title}}</a>
+                    <p class="status"> --> {{task.status}}</p>
 
                 {% endif %}
+
+
             </div>
 
             <div class="task-controls">
