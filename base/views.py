@@ -11,6 +11,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
+from django.http import JsonResponse
+from django.core.serializers import serialize
+
 from .forms import PositionForm
 from .models import Task
 
@@ -59,6 +62,12 @@ class TaskList(LoginRequiredMixin, ListView):
         context['search_input'] = search_input
 
         return context
+
+
+
+    def jsonTasks(request, id):
+        data = serialize("json", Task.objects.filter(user=id))
+        return JsonResponse(data, status=200, safe=False)
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
