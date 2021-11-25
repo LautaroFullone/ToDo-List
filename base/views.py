@@ -1,3 +1,5 @@
+import json
+
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.views import View
@@ -64,10 +66,9 @@ class TaskList(LoginRequiredMixin, ListView):
         return context
 
 
-
     def jsonTasks(request, id):
-        data = serialize("json", Task.objects.filter(user=id))
-        return JsonResponse(data, status=200, safe=False)
+        data = serialize("json", list(Task.objects.filter(user=id)))
+        return JsonResponse(json.loads(data), status=200, safe=False)
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
